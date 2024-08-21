@@ -1,8 +1,8 @@
-import { UserInfo } from "@/components/component/user-info";
+import { UsersLists } from "@/components/component/users-lists";
 
 const Users = () => {
   return (
-    <UserInfo />
+  <UsersLists />
   )
 }
 export default Users;
