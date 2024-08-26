@@ -23,9 +23,8 @@ export function LoginForm() {
       })
       signIn(data.token)
     } catch (err: any) {
-      if(err.response.status === 403){
-        alert("wrong password")
-      }
+			console.log(err)
+      alert("wrong password")
     } finally {
       setLoading(false)
     }

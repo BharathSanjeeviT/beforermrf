@@ -59,7 +59,7 @@ export function SitesList() {
           {filteredSites.map((site) => (
             <Link
               key={site.s_id}
-              href="#"
+              href={`/sites/${site.s_id}`}
               className="bg-card p-4 rounded-lg hover:bg-card/80 transition-colors shadow-md hover:shadow-lg"
               prefetch={false}
             >
