@@ -1,7 +1,11 @@
+import Navbar from "@/components/component/navbar";
 import { Options } from "@/components/component/options";
 
 export default function Component() {
   return (
-    <Options />
-  )
+    <>
+      <Navbar name="Admin Dashboard" />
+      <Options />
+    </>
+  );
 }

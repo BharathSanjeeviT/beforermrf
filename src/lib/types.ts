@@ -1,3 +1,29 @@
+export interface AttendanceRecord {
+	check_in: string;
+	check_out: string;
+	day: string;
+	s_id: string;
+	u_id: string;
+	u_name: string;
+	r_name: string;
+}
+export interface MessageType {
+	nid: string;
+	time: Date;
+	uid: string;
+	value: string;
+	u_name: string;
+}
+
+export interface SiteType {
+  latitude: string;
+  longitude: string;
+  radius: number;
+  s_id: string;
+  s_name: string;
+  u_id: string;
+  u_name: string;
+}
 export interface LogType {
   p_name: string;
   p_id: string;
@@ -5,6 +31,8 @@ export interface LogType {
   receive_time: string;
   receiver: string;
   requested_time: string | null;
+  sender_name: string;
+  receiver_name: string;
   sender: string | null;
 }
 
@@ -16,6 +44,8 @@ export interface PLogType {
     receive_time: string;
     receiver: string | null;
     requested_time: string | null;
+    sender_name: string;
+    receiver_name: string;
     sender: string | null;
   }>;
 }

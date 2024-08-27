@@ -3,10 +3,9 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { Button } from "../ui/button";
 
-const EditDate = (
+const EditDateLog = (
   { date, setDate, doTheHonours }: { date: Date | null, setDate: React.Dispatch<SetStateAction<Date | null>>, doTheHonours: () => void }
 ) => {
-
   const dateRef = useRef<DatePicker>(null);
   const editDate = () => {
     if (dateRef.current) {
@@ -18,8 +17,6 @@ const EditDate = (
       <DatePicker
         selected={date}
         onChange={(date: Date | null) => setDate(date)}
-        dateFormat="MM/yyyy"
-        showMonthYearPicker
         className="p-2 w-32 pl-7 border-none focus:border-none focus:outline-none"
         ref={dateRef}
       />
@@ -32,4 +29,5 @@ const EditDate = (
     </div>
   )
 }
-export default EditDate;
+export default EditDateLog;
+

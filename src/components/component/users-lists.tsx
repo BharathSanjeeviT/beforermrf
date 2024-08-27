@@ -7,7 +7,7 @@ import axios from "axios"
 import { API_URL } from "@/lib/utils"
 import { UserType } from "@/lib/types"
 import { useRouter } from "next/navigation"
-import { useUser } from "@/store"
+import Navbar from "./navbar"
 
 export function UsersLists() {
   const [search, setSearch] = useState("")
@@ -43,6 +43,7 @@ export function UsersLists() {
 
   return (
     <>
+			<Navbar name="Users" />
       {load ? <div className="flex items-center justify-center min-h-screen w-full">Loading...</div> :
         <div className="container mx-auto px-4 md:px-6 py-8">
           {openModal && <Modal setOpenModal={setOpenModal} />}

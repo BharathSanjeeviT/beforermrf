@@ -1,8 +1,6 @@
 import { SitesList } from "@/components/component/sites-list";
 
 const Sites = () => {
-  return (
-    <SitesList />
-  )
-}
+  return <SitesList />;
+};
 export default Sites;
