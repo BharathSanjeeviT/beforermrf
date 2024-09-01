@@ -1,17 +1,18 @@
 import { EODItemType } from "@/lib/types";
+import { utcToIst } from "@/lib/utils";
 import Link from "next/link";
 
 export function EODInfo({ eod, site_id }: { eod: EODItemType, site_id: string }) {
-	const eodTime = new Date(eod.eod_time);
+	const eodTime = (eod.eod_time);
 	return (
 		<Link className="flex items-center justify-between border-b pb-2"
-			href={`${site_id}/eod/${eodTime.toISOString().split("T")[0]}`}
+			href={`${site_id}/eod/${utcToIst(eodTime).toISOString().split("T")[0]}`}
 		>
 			<div className="flex items-center gap-2">
 				<ClockIcon className="h-5 w-5 text-muted-foreground" />
 				<span className="text-sm">
 					Closed at{" "}
-					{eodTime.toLocaleTimeString([], {
+					{utcToIst(eodTime).toLocaleTimeString([], {
 						hour: "2-digit",
 						minute: "2-digit",
 					})}
@@ -19,7 +20,7 @@ export function EODInfo({ eod, site_id }: { eod: EODItemType, site_id: string })
 			</div>
 			<span className="text-sm text-muted-foreground">
 				{" "}
-				{eodTime.toLocaleDateString()}{" "}
+				{utcToIst(eodTime).toLocaleDateString()}{" "}
 			</span>
 		</Link>
 	);

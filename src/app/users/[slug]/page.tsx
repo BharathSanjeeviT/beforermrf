@@ -2,6 +2,8 @@
 
 import EditDate from "@/components/component/edit-date";
 import Navbar from "@/components/component/navbar";
+import Modal from "@/components/component/persona-change";
+import { DropDown } from "@/components/component/persona-drop";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -12,7 +14,8 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { AttendanceRecord, UserType } from "@/lib/types";
-import { API_URL } from "@/lib/utils";
+import { API_URL, getstartend, utcToIst } from "@/lib/utils";
+import { useSession } from "@/store";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -22,6 +25,13 @@ const UserDetails = ({ params }: { params: { slug: string } }) => {
   const [date, setDate] = useState<Date | null>(new Date(Date.now()));
   const [attendence, setAttendence] = useState<Array<AttendanceRecord>>([]);
   const [user, setUser] = useState<UserType>();
+  const [selectedOption, setSelectedOption] = useState("supervisor");
+  const [openmodal, setOpenModal] = useState(false);
+
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOption(event.target.value);
+  };
+  const { token } = useSession();
 
   useEffect(() => {
     (async () => {
@@ -30,19 +40,18 @@ const UserDetails = ({ params }: { params: { slug: string } }) => {
           u_id: params.slug,
         });
         setUser(userData.data.user[0]);
-        const attendenceData = await axios.post(`${API_URL}/attendance/get`, {
+        const { start, end } = getstartend(new Date());
+        const body = {
           u_id: params.slug,
-          start_date: new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            1,
-          ).toISOString(),
-          end_date: new Date(
-            new Date().getFullYear(),
-            new Date().getMonth() + 1,
-            0,
-          ).toISOString(),
-        });
+          token,
+          start_date: start.toLocaleDateString(),
+          end_date: end.toLocaleDateString(),
+        };
+        console.log(body);
+        const attendenceData = await axios.post(
+          `${API_URL}/attendance/get`,
+          body,
+        );
         setAttendence(attendenceData.data.attendance);
       } catch (err) {
         console.log(err);
@@ -55,19 +64,14 @@ const UserDetails = ({ params }: { params: { slug: string } }) => {
   const getAttendence = async () => {
     try {
       setFetching(true);
-      const { data } = await axios.post(`${API_URL}/attendance/get`, {
+      const { start, end } = getstartend(date!);
+      const body = {
         u_id: params.slug,
-        start_date: new Date(
-          date!.getFullYear(),
-          date!.getMonth(),
-          1,
-        ).toISOString(),
-        end_date: new Date(
-          date!.getFullYear(),
-          date!.getMonth() + 1,
-          0,
-        ).toISOString(),
-      });
+        token,
+        start_date: start.toLocaleDateString(),
+        end_date: end.toLocaleDateString(),
+      };
+      const { data } = await axios.post(`${API_URL}/attendance/get`, body);
       setAttendence(data.attendance);
     } catch (err) {
       console.log(err);
@@ -87,6 +91,7 @@ const UserDetails = ({ params }: { params: { slug: string } }) => {
         ) : (
           <div className="bg-card rounded-lg shadow-lg overflow-hidden">
             <div className="bg-black border rounded-t-lg bg-[#000] flex items-center justify-between py-7 px-6">
+              {openmodal && <Modal setOpenModal={setOpenModal} uid={params.slug}/>}
               <div className="mx-2">
                 <div className="font-semibold text-xl text-[#fff]">
                   {user?.u_name}
@@ -96,9 +101,16 @@ const UserDetails = ({ params }: { params: { slug: string } }) => {
                   {user?.adhaar_no}
                 </div>
               </div>
-              <Button variant="destructive" size="sm" disabled>
+              <Button variant="destructive" size="sm" disabled className="mx-5">
                 <TrashIcon className="h-4 w-4" />
                 <span className="ml-1">Delete User</span>
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => setOpenModal(true)}
+              >
+                <span className="ml-1">Change Persona</span>
               </Button>
             </div>
             <div className="p-5">
@@ -134,10 +146,10 @@ const UserDetails = ({ params }: { params: { slug: string } }) => {
                               {new Date(item.day).toDateString()}
                             </TableCell>
                             <TableCell>
-                              {new Date(item.check_in).toLocaleTimeString()}
+                              {utcToIst(item.check_in).toLocaleTimeString()}
                             </TableCell>
                             <TableCell>
-                              {new Date(item.check_out).toLocaleTimeString()}
+                              {item.check_out ? utcToIst(item.check_out).toLocaleTimeString() : "N/A"}
                             </TableCell>
                             <TableCell>
                               {parseInt(item.total_hours_worked) > 8
