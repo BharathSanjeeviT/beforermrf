@@ -23,9 +23,7 @@ import axios from "axios";
 import { SetStateAction, useEffect, useMemo, useState } from "react";
 
 const SitesList = ({ params: { slug } }: { params: { slug: string } }) => {
-	const [date, setDate] = useState<Date | null>(
-		new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-	);
+	const [date, setDate] = useState<Date | null>(new Date(Date.now()));
 	const [load, setLoad] = useState(true);
 	const [sload, setSload] = useState(false);
 	const [fetch, setFetch] = useState(false);
@@ -420,6 +418,12 @@ const Logpop = ({
 								</div>
 							))
 						)}
+								<div>
+								Total Items Bought:{" "} XXX
+								</div>
+								<div>
+								Total Items Used:{" "} XXX
+								</div>
 						<div className="flex justify-center items-center mt-4">
 							<Button onClick={() => setLogpop(false)}>Close</Button>
 						</div>

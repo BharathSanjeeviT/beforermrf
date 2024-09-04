@@ -22,6 +22,7 @@ const EOD = ({
   useEffect(() => {
     (async () => {
       try {
+				console.log(slug, eodid);
         const { data } = await axios.post(`${API_URL}/site/get`, {
           s_id: slug,
           date: new Date(eodid),
@@ -155,7 +156,7 @@ const EOD = ({
                                   log.receive_time,
                                 ).toLocaleTimeString()}
                                 - {log.quant} units{" "}
-                                {log.sender === sid ? "sent" : "used"}
+                                {log.sender === null ? "imported" : "used"}
                               </p>
                             );
                           })}

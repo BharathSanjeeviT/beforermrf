@@ -30,6 +30,7 @@ const Modal = ({
           longitude: lon,
         });
         console.log(data);
+				window.location.reload();
       } catch (err) {
         console.log(err);
       } finally {
