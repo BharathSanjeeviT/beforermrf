@@ -305,7 +305,7 @@ const Logpop = ({
 }) => {
 	const [load, setLoad] = useState(true);
 	const [date, setDate] = useState<Date | null>(
-		new Date(new Date().setDate(new Date().getDate() - 1)),
+		new Date(new Date().setDate(new Date().getDate())),
 	);
 	const [log, setLog] = useState<Array<LogType>>([]);
 	const [plog, setPlog] = useState<Array<PLogType>>([]);
